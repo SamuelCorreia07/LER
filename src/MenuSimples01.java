@@ -31,8 +31,8 @@ public class MenuSimples01 {
                         System.out.println("Consulta realizada com sucesso!\n" +
                                 "Nome: " + nomeAluno +
                                 "\nNúmero de matrícula: " + numMatricula);
-                        break;
                     }
+                    break;
                 case 3:
                     System.out.println("Selecionado sair");
                     sair = true;
@@ -44,8 +44,6 @@ public class MenuSimples01 {
         } while (!sair);
         System.out.println("Até breve!");
 
-
         scanner.close();
-
     }
 }
