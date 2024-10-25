@@ -31,6 +31,8 @@ public class MenuSimples01 {
                         System.out.println("Consulta realizada com sucesso!\n" +
                                 "Nome: " + nomeAluno +
                                 "\nNúmero de matrícula: " + numMatricula);
+                    } else {
+                        System.out.println("Matrícula inválida!");
                     }
                     break;
                 case 3:
