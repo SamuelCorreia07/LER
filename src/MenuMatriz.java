@@ -11,8 +11,10 @@ public class MenuMatriz {
         int opcaoMenu;
         boolean sair = false;
         int contadorLinhas = 0;
-        int contadorColunas = 0;
+        int contadorColunas;
         String consulta;
+        boolean consultaV = false;
+        int contadorConsulta = 0;
 
         do {
             System.out.println("Escolha uma opção:\n" +
@@ -24,7 +26,7 @@ public class MenuMatriz {
             switch (opcaoMenu) {
                 case 1:
                     System.out.println("Selecionado Cadastro");
-                    for (int i = contadorLinhas; i < 10; i++) {
+                    if (contadorLinhas < 11) {
                         contadorLinhas++;
                         contadorColunas = 0;
                         System.out.print("Digite o nome do aluno: ");
@@ -32,18 +34,29 @@ public class MenuMatriz {
                         contadorColunas++;
                         System.out.print("Digite o número da matrícula: ");
                         cadastro[contadorLinhas][contadorColunas] = scanner.nextLine();
+                    } else {
+                        System.out.println("Quantidade máxima de alunos cadastrados atingida");
+                        break;
                     }
                     System.out.println("Cadastro efetuado com sucesso!");
                     break;
                 case 2:
                     System.out.println("Selecionado Consulta");
-                    for (int j = 0; j < contadorLinhas; j++) {
-                        System.out.println(cadastro[j][0] + cadastro[j][1]);
-                    }
                     System.out.println("Digite o número da matrícula: ");
                     consulta = scanner.nextLine();
-
-
+                    for (int k = 0; k < 10; k++) {
+                        if (consulta.equals(cadastro[k][1])) {
+                            consultaV = true;
+                            contadorConsulta = k;
+                            break;
+                        }
+                    }
+                    if (consultaV == true){
+                        System.out.println("Cadastro encontrado: " +
+                                "\nNome: " + cadastro[contadorConsulta][0] + " | Matrícula: " + cadastro[contadorConsulta][1]);
+                    } else {
+                        System.out.println("Cadastro não encontrado");
+                    }
                     break;
                 case 3:
                     System.out.println("Selecionado sair");
