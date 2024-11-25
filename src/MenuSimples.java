@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class MenuSimples01 {
+public class MenuSimples {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String nomeAluno = null, numMatricula = null, consulta;
