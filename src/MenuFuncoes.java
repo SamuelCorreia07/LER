@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class MenuFuncoes {
     static Scanner scanner = new Scanner(System.in);
-    static String[] cabecalho = {"ID", "Cargo", "Nome", "Telefone", "E-mail"};
+    static String[] cabecalho = {"ID", "Cargo", "Nome", "Matrícula"};
     static String[][] cadastro = {{"",""}};
 
 
@@ -92,29 +92,31 @@ public class MenuFuncoes {
                 case 1:
                     if (qtdUsuarios <= totalAluno){
                         cadastrarUsuario(qtdUsuarios, "Aluno");
+                        totalAluno-=qtdUsuarios;
                     } else {
-                        System.out.println("Quantidade máxima de alunos cadastrados atingida");
+                        System.out.println("Quantidade máxima de alunos atingida");
                         break;
                     }
                     break;
                 case 2:
                     if (qtdUsuarios <= totalCoordenador){
                         cadastrarUsuario(qtdUsuarios, "Coordenador");
+                        totalCoordenador-=qtdUsuarios;
                     } else {
-                        System.out.println("Quantidade máxima de coordenadores cadastrados atingida");
+                        System.out.println("Quantidade máxima de coordenadores atingida");
                         break;
                     }
                     break;
                 case 3:
                     if (qtdUsuarios <= totalAQV){
                         cadastrarUsuario(qtdUsuarios, "AQV");
+                        totalAQV-=qtdUsuarios;
                     } else {
-                        System.out.println("Quantidade máxima de AQV cadastrado atingida");
+                        System.out.println("Quantidade máxima de AQV atingida");
                         break;
                     }
                     break;
                 case 4:
-                    System.out.println("Fim do programa");
                     break;
                 default:
                     System.out.println("Opção Inválida!");
@@ -125,28 +127,28 @@ public class MenuFuncoes {
 
     public static void cadastrarUsuario(int qtdUsuarios, String cargo){
 
-        String[][] novaMatriz = new String[cadastro.length+qtdUsuarios][cabecalho.length];
+        String[][] novoCadastro = new String[cadastro.length+qtdUsuarios][cabecalho.length];
 
         for (int linha = 0; linha < cadastro.length; linha++) {
-            novaMatriz[linha] = Arrays.copyOf(cadastro[linha],cadastro[linha].length);
+            novoCadastro[linha] = Arrays.copyOf(cadastro[linha],cadastro[linha].length);
         }
 
         System.out.println("Preencha os dados a seguir:");
-        for (int linha = cadastro.length; linha < novaMatriz.length; linha++) {
+        for (int linha = cadastro.length; linha < novoCadastro.length; linha++) {
             System.out.println("Cadastro da pessoa " + linha);
 
             System.out.println(cabecalho[0] + ": " + linha);
-            novaMatriz[linha][0] = String.valueOf(linha); //Converte valor inteiro para String
+            novoCadastro[linha][0] = String.valueOf(linha); //Converte valor inteiro para String
 
             System.out.println(cabecalho[1] + ": " + cargo);
-            novaMatriz[linha][1] = cargo;
+            novoCadastro[linha][1] = cargo;
 
             for (int coluna = 2; coluna < cabecalho.length; coluna++) {
                 System.out.print(cabecalho[coluna] + ": ");
-                novaMatriz[linha][coluna] = scanner.nextLine();
+                novoCadastro[linha][coluna] = scanner.nextLine();
             }
         }
-        cadastro = novaMatriz;
+        cadastro = novoCadastro;
     }
 
 
@@ -159,8 +161,11 @@ public class MenuFuncoes {
         scanner.nextLine();
 
         System.out.println(cabecalho[0] +": " + idEscolhido);
+
+        //Cargo automático
+
         for (int coluna = 1; coluna < cabecalho.length; coluna++) {
-            System.out.println(cabecalho[coluna] + ": ");
+            System.out.print(cabecalho[coluna] + ": ");
             cadastro[idEscolhido][coluna] = scanner.nextLine();
         }
 
