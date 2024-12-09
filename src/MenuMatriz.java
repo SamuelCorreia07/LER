@@ -17,10 +17,11 @@ public class MenuMatriz {
         int contadorConsulta = 0;
 
         do {
-            System.out.println("Escolha uma opção:\n" +
-                    "\t1 - Cadastro\n" +
-                    "\t2 - Consulta\n" +
-                    "\t3 - Sair");
+            System.out.println("""
+                    Escolha uma opção:
+                    \t1 - Cadastro
+                    \t2 - Consulta
+                    \t3 - Sair""");
             opcaoMenu = scanner.nextInt();
             scanner.nextLine();
             switch (opcaoMenu) {
@@ -51,7 +52,7 @@ public class MenuMatriz {
                             break;
                         }
                     }
-                    if (consultaV == true){
+                    if (consultaV){
                         System.out.println("Cadastro encontrado: " +
                                 "\nNome: " + cadastro[contadorConsulta][0] + " | Matrícula: " + cadastro[contadorConsulta][1]);
                     } else {

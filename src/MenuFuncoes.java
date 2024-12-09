@@ -1,73 +1,173 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class MenuFuncoes {
+    static Scanner scanner = new Scanner(System.in);
+    static String[] cabecalho = {"ID", "Cargo", "Nome", "Telefone", "E-mail"};
+    static String[][] cadastro = {{"",""}};
+
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String[][] cadastro = new String[10][2];
+        cadastro[0] = cabecalho;
 
-        cadastro[0][0] = "Nome";
-        cadastro[0][1] = "Matrícula";
+        String menu = """
+                _____________________________________________
+                |   Escolha uma opção:                      |
+                |       1- Exibir Cadastro Completo         |
+                |       2- Inserir Novo Usuário             |
+                |       3- Atualizar Cadastro por ID        |
+                |       4- Deletar um Cadastro por ID       |
+                |       5- Sair                             |
+                |___________________________________________|
+                """;
 
-        int opcaoMenu;
-        boolean sair = false;
-        int contadorLinhas = 0;
-        int contadorColunas;
-        String consulta;
-        boolean consultaV = false;
-        int contadorConsulta = 0;
-
+        int opcao;
         do {
-            System.out.println("Escolha uma opção:\n" +
-                    "\t1 - Cadastro\n" +
-                    "\t2 - Consulta\n" +
-                    "\t3 - Sair");
-            opcaoMenu = scanner.nextInt();
+            System.out.println(menu);
+            opcao = scanner.nextInt();
             scanner.nextLine();
-            switch (opcaoMenu) {
+
+            switch (opcao) {
                 case 1:
-                    System.out.println("Selecionado Cadastro");
-                    if (contadorLinhas < 11) {
-                        contadorLinhas++;
-                        contadorColunas = 0;
-                        System.out.print("Digite o nome do aluno: ");
-                        cadastro[contadorLinhas][contadorColunas] = scanner.nextLine();
-                        contadorColunas++;
-                        System.out.print("Digite o número da matrícula: ");
-                        cadastro[contadorLinhas][contadorColunas] = scanner.nextLine();
+                    exibirUsuario();
+                    break;
+                case 2:
+                    menuCadastrarUsuario();
+                    break;
+                case 3:
+                    atualizarUsuario();
+                    break;
+                case 4:
+                    deletarUsuario();
+                    break;
+                case 5:
+                    System.out.println("Fim do programa");
+                    scanner.close();
+                    break;
+                default:
+                    System.out.println("Opção Inválida!");
+            }
+        } while (opcao != 5);
+    }
+
+    public static void exibirUsuario(){
+        StringBuilder tabela = new StringBuilder();
+
+        for (String[] linhas : cadastro) {
+            for (int colunas = 0; colunas < cadastro[0].length; colunas++) {
+                int tamanhoColuna = colunas == 0 ? 5 : (colunas == 3 || colunas == 1 ? 12 : 25);
+                tabela.append(String.format("%-" + tamanhoColuna + "s|", linhas[colunas]));
+            }
+            tabela.append("\n"); // Para pular para a próxima linha
+        }
+        System.out.println(tabela);
+    }
+
+    public static void menuCadastrarUsuario(){
+
+        int totalAluno = 10;
+        int totalCoordenador = 2;
+        int totalAQV = 1;
+
+        System.out.print("Digite a quantidade de usuários que deseja cadastrar: ");
+        int qtdUsuarios = scanner.nextInt();
+
+        String menuCadastro = """
+                ____________________________________________________
+                |   Selecione o cargo do(s) usuário(s):            |
+                |       1- Aluno                                   |
+                |       2- Coordenador                             |
+                |       3- Assistente de Qualidade de Vida (AQV)   |
+                |       4- Sair                                    |
+                |__________________________________________________|
+                """;
+
+        int opcao;
+        do {
+            System.out.println(menuCadastro);
+            opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    if (qtdUsuarios <= totalAluno){
+                        cadastrarUsuario(qtdUsuarios, "Aluno");
                     } else {
                         System.out.println("Quantidade máxima de alunos cadastrados atingida");
                         break;
                     }
-                    System.out.println("Cadastro efetuado com sucesso!");
                     break;
                 case 2:
-                    System.out.println("Selecionado Consulta");
-                    System.out.println("Digite o número da matrícula: ");
-                    consulta = scanner.nextLine();
-                    for (int k = 0; k < 10; k++) {
-                        if (consulta.equals(cadastro[k][1])) {
-                            consultaV = true;
-                            contadorConsulta = k;
-                            break;
-                        }
-                    }
-                    if (consultaV == true){
-                        System.out.println("Cadastro encontrado: " +
-                                "\nNome: " + cadastro[contadorConsulta][0] + " | Matrícula: " + cadastro[contadorConsulta][1]);
+                    if (qtdUsuarios <= totalCoordenador){
+                        cadastrarUsuario(qtdUsuarios, "Coordenador");
                     } else {
-                        System.out.println("Cadastro não encontrado");
+                        System.out.println("Quantidade máxima de coordenadores cadastrados atingida");
+                        break;
                     }
                     break;
                 case 3:
-                    System.out.println("Selecionado sair");
-                    sair = true;
+                    if (qtdUsuarios <= totalAQV){
+                        cadastrarUsuario(qtdUsuarios, "AQV");
+                    } else {
+                        System.out.println("Quantidade máxima de AQV cadastrado atingida");
+                        break;
+                    }
+                    break;
+                case 4:
+                    System.out.println("Fim do programa");
                     break;
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opção Inválida!");
             }
-        } while (!sair);
-        System.out.println("Até breve!");
+        } while (opcao != 4);
 
-        scanner.close();
+    }
+
+    public static void cadastrarUsuario(int qtdUsuarios, String cargo){
+
+        String[][] novaMatriz = new String[cadastro.length+qtdUsuarios][cabecalho.length];
+
+        for (int linha = 0; linha < cadastro.length; linha++) {
+            novaMatriz[linha] = Arrays.copyOf(cadastro[linha],cadastro[linha].length);
+        }
+
+        System.out.println("Preencha os dados a seguir:");
+        for (int linha = cadastro.length; linha < novaMatriz.length; linha++) {
+            System.out.println("Cadastro da pessoa " + linha);
+
+            System.out.println(cabecalho[0] + ": " + linha);
+            novaMatriz[linha][0] = String.valueOf(linha); //Converte valor inteiro para String
+
+            System.out.println(cabecalho[1] + ": " + cargo);
+            novaMatriz[linha][1] = cargo;
+
+            for (int coluna = 2; coluna < cabecalho.length; coluna++) {
+                System.out.print(cabecalho[coluna] + ": ");
+                novaMatriz[linha][coluna] = scanner.nextLine();
+            }
+        }
+        cadastro = novaMatriz;
+    }
+
+
+    public static void atualizarUsuario(){
+
+        exibirUsuario();
+
+        System.out.println("\n Digite o ID do usuario para atualizar");
+        int idEscolhido = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println(cabecalho[0] +": " + idEscolhido);
+        for (int coluna = 1; coluna < cabecalho.length; coluna++) {
+            System.out.println(cabecalho[coluna] + ": ");
+            cadastro[idEscolhido][coluna] = scanner.nextLine();
+        }
+
+        exibirUsuario();
+
+    }
+    public static void deletarUsuario(){
+        System.out.println("Deletar");
     }
 }
