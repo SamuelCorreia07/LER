@@ -178,7 +178,6 @@ public class MenuFuncoes2 {
                 break;
             }
         }
-
     }
 
     public static void atualizarUsuario(){
