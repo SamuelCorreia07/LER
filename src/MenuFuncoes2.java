@@ -160,8 +160,8 @@ public class MenuFuncoes2 {
         System.out.println("\nDigite o ID do usuario para buscar: ");
         String idEscolhido = scanner.nextLine();
 
-        for (String[] linha : cadastro) {
-            if (linha[0].equals(idEscolhido)) {
+        for (int linhas = 1; linhas < cadastro.length; linhas++) {
+            if (cadastro[linhas][0].equals(idEscolhido)) {
                 StringBuilder tabela = new StringBuilder();
                 for (int colunas = 0; colunas < cadastro[0].length; colunas++) {
                     int tamanhoColuna = colunas == 0 ? 5 : (colunas == 3 || colunas == 1 ? 12 : 25);
@@ -170,7 +170,7 @@ public class MenuFuncoes2 {
                 tabela.append("\n"); // Para pular para a próxima linha
                 for (int colunas = 0; colunas < cadastro[0].length; colunas++) {
                     int tamanhoColuna = colunas == 0 ? 5 : (colunas == 3 || colunas == 1 ? 12 : 25);
-                    tabela.append(String.format("%-" + tamanhoColuna + "s|", linha[colunas]));
+                    tabela.append(String.format("%-" + tamanhoColuna + "s|", cadastro[linhas][colunas]));
                 }
                 System.out.println(tabela);
             } else {
