@@ -1,7 +1,11 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class MenuFuncoes2 {
+public class MenuManipArquivos {
     static Scanner scanner = new Scanner(System.in);
     static String[] cabecalho = {"ID", "Cargo", "Nome", "Matrícula"};
     static String[][] cadastro = {{"",""}};
@@ -152,6 +156,7 @@ public class MenuFuncoes2 {
             }
         }
         cadastro = novoCadastro;
+        salvarDadosNoArquivo();
     }
 
     public static void buscaUsuario() {
@@ -194,7 +199,9 @@ public class MenuFuncoes2 {
             cadastro[idEscolhido][coluna] = scanner.nextLine();
         }
 
+        System.out.println("Usuário atualizado com sucesso!");
         exibirUsuario();
+        salvarDadosNoArquivo();
 
     }
     public static void deletarUsuario(){
@@ -216,8 +223,27 @@ public class MenuFuncoes2 {
         }
 
         cadastro = novoCadastro;
+        salvarDadosNoArquivo();
 
         System.out.println("Usuário deletado com sucesso!");
         exibirUsuario();
+    }
+
+    public static void salvarDadosNoArquivo(){
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Cadastro.txt"))) {
+            for (String[] linha : cadastro) {
+                bufferedWriter.write(String.join(",",linha)+"\n");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void carregarDadosDoArquivo(){
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(""))) {
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
