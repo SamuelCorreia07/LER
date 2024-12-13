@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -10,8 +7,10 @@ public class MenuManipArquivos {
     static String[] cabecalho = {"ID", "Cargo", "Nome", "Matrícula"};
     static String[][] cadastro = {{"",""}};
 
+    static File arquivoBancoDeDados = new File(System.getProperty("user.home"),"BancoDeDados.txt");
 
     public static void main(String[] args) {
+        carregarDadosDoArquivo();
         cadastro[0] = cabecalho;
 
         String menu = """
@@ -188,7 +187,7 @@ public class MenuManipArquivos {
 
         exibirUsuario();
 
-        System.out.println("\n Digite o ID do usuario para atualizar");
+        System.out.println("Digite o ID do usuario para atualizar");
         int idEscolhido = scanner.nextInt();
         scanner.nextLine();
 
@@ -230,7 +229,7 @@ public class MenuManipArquivos {
     }
 
     public static void salvarDadosNoArquivo(){
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("Cadastro.txt"))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(arquivoBancoDeDados))) {
             for (String[] linha : cadastro) {
                 bufferedWriter.write(String.join(",",linha)+"\n");
             }
@@ -240,7 +239,33 @@ public class MenuManipArquivos {
     }
 
     public static void carregarDadosDoArquivo(){
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(""))) {
+        String linha;
+        StringBuilder conteudoDoArquivo = new StringBuilder();
+
+        if(!arquivoBancoDeDados.exists()) {
+            try {
+                if (arquivoBancoDeDados.createNewFile()){
+                    System.out.println("Arquivo " + arquivoBancoDeDados.getName() + " criado com sucesso!");
+                }
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(arquivoBancoDeDados))) {
+
+            while ((linha = bufferedReader.readLine())!=null){
+                conteudoDoArquivo.append(linha).append("\n");
+            }
+
+            String[] linhaDadosUsuario = conteudoDoArquivo.toString().split("\n");
+
+            cadastro = new String[linhaDadosUsuario.length][cabecalho.length];
+
+            for (int i = 0; i < linhaDadosUsuario.length; i++) {
+                cadastro[i] = linhaDadosUsuario[i].split(",");
+            }
 
         } catch (Exception e) {
             throw new RuntimeException(e);
